@@ -2,29 +2,24 @@ cabal-version:      2.4
 name:               cabal-project-tags
 version:            0.1.0.0
 
--- A short (one-line) description of the package.
--- synopsis:
+synopsis:           Tool for generating ctags and etags for an entire cabal project (including direct dependencies).
+description:        Tool for generating ctags and etags for an entire cabal project (including direct dependencies)
+                    using ghc-tags or hasktags. It will fetch dependency sources from hackage automatically.
 
--- A longer description of the package.
--- description:
-
--- A URL where users can report bugs.
--- bug-reports:
-
--- The license under which the package is released.
--- license:
+homepage:           https://github.com/jimenezrick/cabal-project-tags
+bug-reports:        https://github.com/jimenezrick/cabal-project-tags/issues
+license:            MIT
 author:             Ricardo Catalinas Jiménez
 maintainer:         r@untroubled.be
 
--- A copyright notice.
--- copyright:
--- category:
+copyright:          (c) 2022, Ricardo Catalinas Jiménez <r@untroubled.be>
+category:           Development
 
 executable cabal-project-tags
     default-language: Haskell2010
     hs-source-dirs:   src
     main-is:          Main.hs
-    build-depends:    base ^>=4.14.3.0
+    build-depends:    base >=4.14 && <5
                     , containers
                     , filepath
                     , directory

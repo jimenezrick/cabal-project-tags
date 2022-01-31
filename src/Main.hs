@@ -6,6 +6,7 @@
 module Main where
 
 import Cabal.Plan
+import Control.Exception (SomeException, try)
 import Control.Monad (void)
 import Data.Map as M
 import Data.Set as S
@@ -61,6 +62,6 @@ fetchSources deps = do
     Nothing -> error "cannot find cabal project root"
     Just p -> do
       let depsDir = "cabal-project-deps"
-      removeDirectoryRecursive $ p </> depsDir
+      void ((try $ removeDirectoryRecursive (p </> depsDir)) :: IO (Either SomeException ()))
       createDirectoryIfMissing True depsDir
       void . runProcess $ proc "cabal" (["get", [i|--destdir=#{p </> depsDir}|]] ++ deps)
