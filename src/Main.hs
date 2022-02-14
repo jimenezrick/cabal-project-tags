@@ -25,9 +25,9 @@ instance ParseRecord Mode where
 main :: IO ()
 main = do
   opts <- getRecord "Caca"
-  putStrLn "=> Fetching dependencies"
+  putStrLn "-- Fetching dependencies"
   findDeps >>= fetchSources
-  putStrLn "=> Generating tags"
+  putStrLn "-- Generating tags"
   generateTags opts
 
 generateTags :: Mode -> IO ()
