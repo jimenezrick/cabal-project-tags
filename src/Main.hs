@@ -17,7 +17,14 @@ import System.Directory (createDirectoryIfMissing, removeDirectoryRecursive)
 import System.FilePath ((</>))
 import System.Process.Typed
 
-data Mode = GhcTagsEmacs | GhcTagsVim | HasktagsEmacs | HasktagsVim deriving (Generic, Show)
+data Mode
+  = CtagsEmacs
+  | CtagsVim
+  | GhcTagsEmacs
+  | GhcTagsVim
+  | HasktagsEmacs
+  | HasktagsVim
+  deriving (Generic, Show, Read)
 
 instance ParseRecord Mode where
   parseRecord = parseRecordWithModifiers $ lispCaseModifiers {shortNameModifier = firstLetter}
@@ -37,10 +44,13 @@ generateTags mode = do
     Nothing -> error "cannot find cabal project root"
     Just p -> void . runProcess . setWorkingDir p $ cmd mode
   where
+    cmd CtagsEmacs = proc "ctags" ("-e" : ctagsArgs)
+    cmd CtagsVim = proc "ctags" ctagsArgs
     cmd GhcTagsEmacs = proc "ghc-tags" ["-e", "."]
     cmd GhcTagsVim = proc "ghc-tags" ["-c", "."]
     cmd HasktagsEmacs = proc "hasktags" ["-e", "."]
     cmd HasktagsVim = proc "hasktags" ["-c", "."]
+    ctagsArgs = ["--kinds-all=*", "--fields=*", "--extras=*", "-R"]
 
 findDeps :: IO [String]
 findDeps = do
